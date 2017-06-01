@@ -54,7 +54,7 @@
  @param hasMiddleLine 是否显示中间长度线
  @return slider
  */
-+ (instancetype)sliderWithWithFrame:(CGRect)frame minValue:(NSUInteger)minValue maxValue:(NSUInteger)maxValue step:(NSUInteger)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
++ (instancetype)sliderWithFrame:(CGRect)frame minValue:(NSUInteger)minValue maxValue:(NSUInteger)maxValue step:(NSUInteger)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
 
 /**
  初始化
