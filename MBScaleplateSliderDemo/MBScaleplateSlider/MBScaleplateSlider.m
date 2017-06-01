@@ -317,7 +317,7 @@
     _initialAtMiddle = initialAtMiddle;
     if (initialAtMiddle) {
         // 设置初次显示位置
-        self.realValue = round((_maxValue - _minValue) / 2.0);
+        self.realValue = round((_groupMaxNum * _stepNum) / 2.0);
 
     }
 }
