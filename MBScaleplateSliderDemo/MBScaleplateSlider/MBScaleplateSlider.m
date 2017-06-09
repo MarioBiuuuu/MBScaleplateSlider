@@ -260,17 +260,17 @@
 - (UITextField *)valueTF {
     if (!_valueTF) {
         _valueTF = [[UITextField alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(self.collectionView.frame) - 20 - 10, self.frame.size.width, 20)];
-        _valueTF.defaultTextAttributes = @{NSUnderlineColorAttributeName:[UIColor orangeColor],
-                                           NSUnderlineStyleAttributeName:@(1),
+        _valueTF.defaultTextAttributes = @{NSUnderlineColorAttributeName:[UIColor blackColor],
+                                           NSUnderlineStyleAttributeName:@(0),
                                            NSFontAttributeName:[UIFont systemFontOfSize:18],
-                                           NSForegroundColorAttributeName:[UIColor orangeColor]};
+                                           NSForegroundColorAttributeName:[UIColor blackColor]};
         _valueTF.textAlignment = NSTextAlignmentCenter;
         _valueTF.delegate = self;
         _valueTF.keyboardType  = UIKeyboardTypeNumberPad;
         _valueTF.userInteractionEnabled = NO;
         NSDictionary *attribute = @{NSUnderlineColorAttributeName:[UIColor lightGrayColor],
-                                    NSUnderlineStyleAttributeName:@(1),
-                                    NSFontAttributeName:[UIFont systemFontOfSize:12],
+                                    NSUnderlineStyleAttributeName:@(0),
+                                    NSFontAttributeName:[UIFont systemFontOfSize:18],
                                     NSForegroundColorAttributeName:[UIColor grayColor]};
         _valueTF.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"滑动标尺或输入" attributes:attribute];
         _valueTF.text = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
@@ -305,11 +305,13 @@
         _titleColor = [UIColor orangeColor];
     }
     _titleColor = titleColor;
-    _valueTF.defaultTextAttributes = @{NSUnderlineColorAttributeName:_titleColor,
-                                       NSUnderlineStyleAttributeName:@(1),
-                                       NSFontAttributeName:[UIFont systemFontOfSize:18],
-                                       NSForegroundColorAttributeName:_titleColor};
-
+//    self.valueTF.textAlignment = NSTextAlignmentCenter;
+//    NSDictionary *attribute = @{NSUnderlineColorAttributeName:[UIColor lightGrayColor],
+//                                NSUnderlineStyleAttributeName:@(1),
+//                                NSFontAttributeName:[UIFont systemFontOfSize:18],
+//                                NSForegroundColorAttributeName:[UIColor grayColor]};
+//
+//    self.valueTF.defaultTextAttributes = attribute;
 }
 
 - (void)setInitialAtMiddle:(BOOL)initialAtMiddle {

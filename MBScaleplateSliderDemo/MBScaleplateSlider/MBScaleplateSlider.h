@@ -36,7 +36,9 @@
 /** 选中先颜色 */
 @property (nonatomic, strong) UIColor *tintLineColor;
 /** 文字标题颜色 */
-@property (nonatomic, strong) UIColor *titleColor; 
+@property (nonatomic, strong) UIColor *titleColor;
+/** 文字标题是否需要underline */
+@property (nonatomic, assign) BOOL hiddeUnderLine;
 /** 是否开启手动输入数值 */
 @property (nonatomic, assign) BOOL valueControlEnable;
 /** 是否初始化是显示到中线位置 */

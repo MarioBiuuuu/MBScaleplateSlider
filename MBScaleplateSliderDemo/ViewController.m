@@ -24,7 +24,8 @@
     slider.delegate = self;
     slider.tintLineColor = [UIColor greenColor];
     slider.initialAtMiddle = YES;
-    
+    slider.titleColor = [UIColor blackColor];
+    slider.hiddeUnderLine = YES;
     [self.view addSubview:slider];
 
 }
