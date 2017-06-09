@@ -30,7 +30,7 @@
 
 }
 
-- (void)MBScaleplateSlider:(MBScaleplateSlider *)slider valueChange:(NSUInteger)value {
+- (void)MBScaleplateSlider:(MBScaleplateSlider *)slider valueChange:(CGFloat)value {
     NSLog(@"---%@", @(value));
 }
 

@@ -20,9 +20,9 @@
 #pragma mark - Slider Content View
 @interface MBRulerView : UIView
 /** 最小值 */
-@property (nonatomic, assign) NSUInteger minValue;
+@property (nonatomic, assign) CGFloat minValue;
 /** 最大值 */
-@property (nonatomic, assign) NSUInteger maxValue;
+@property (nonatomic, assign) CGFloat maxValue;
 /** 一组步数 */
 @property (nonatomic, assign) NSUInteger maxGroupNum;
 /** 是否显示中线刻度 */
@@ -92,7 +92,7 @@
 #pragma mark - Slider Right View
 @interface MBRightRulerView : UIView
 /** 最大值 */
-@property (nonatomic, assign) NSUInteger maxValue;
+@property (nonatomic, assign) CGFloat maxValue;
 /** 单位 */
 @property (nonatomic, copy) NSString *unit;
 @end
@@ -131,7 +131,7 @@
 #pragma mark - Slider Left View
 @interface MBLeftRulerView : UIView
 /** 最小值 */
-@property (nonatomic, assign) NSUInteger minValue;
+@property (nonatomic, assign) CGFloat minValue;
 /** 单位 */
 @property (nonatomic, copy) NSString *unit;
 @end
@@ -206,11 +206,11 @@
 
 @implementation MBScaleplateSlider
 /** 初始化 */
-+ (instancetype)sliderWithFrame:(CGRect)frame minValue:(NSUInteger)minValue maxValue:(NSUInteger)maxValue step:(NSUInteger)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
++ (instancetype)sliderWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
     return [[self alloc] initWithFrame:frame minValue:minValue maxValue:maxValue step:step groupMaxNum:groupMaxNum unit:unit hasMiddleLine:hasMiddleLine];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame minValue:(NSUInteger)minValue maxValue:(NSUInteger)maxValue step:(NSUInteger)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
+- (instancetype)initWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
     if(self = [super initWithFrame:frame]) {
         
         NSAssert(maxValue > 0, @"标尺最大值取值区间为大于0");

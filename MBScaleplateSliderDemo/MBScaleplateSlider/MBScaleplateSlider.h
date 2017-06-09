@@ -14,17 +14,17 @@
 
 @optional
 /** 滑动值获取 */
-- (void)MBScaleplateSlider:(MBScaleplateSlider *)slider valueChange:(NSUInteger)value;
+- (void)MBScaleplateSlider:(MBScaleplateSlider *)slider valueChange:(CGFloat)value;
 @end
 
 @interface MBScaleplateSlider : UIView
 
 /** 最小值 */
-@property (nonatomic, assign, readonly) NSUInteger minValue;
+@property (nonatomic, assign, readonly) CGFloat minValue;
 /** 最大值 */
-@property (nonatomic, assign, readonly) NSUInteger maxValue;
+@property (nonatomic, assign, readonly) CGFloat maxValue;
 /** 步长 */
-@property (nonatomic, assign, readonly) NSUInteger step;
+@property (nonatomic, assign, readonly) CGFloat step;
 /** 一组步数 */
 @property (nonatomic, assign, readonly) NSUInteger groupMaxNum;
 /** 单位 */
@@ -56,7 +56,7 @@
  @param hasMiddleLine 是否显示中间长度线
  @return slider
  */
-+ (instancetype)sliderWithFrame:(CGRect)frame minValue:(NSUInteger)minValue maxValue:(NSUInteger)maxValue step:(NSUInteger)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
++ (instancetype)sliderWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
 
 /**
  初始化
@@ -70,7 +70,7 @@
  @param hasMiddleLine 是否显示中间长度线
  @return slider
  */
-- (instancetype)initWithFrame:(CGRect)frame minValue:(NSUInteger)minValue maxValue:(NSUInteger)maxValue step:(NSUInteger)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
+- (instancetype)initWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
 
 @end
 
