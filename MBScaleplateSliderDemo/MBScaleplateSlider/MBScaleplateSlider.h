@@ -43,6 +43,8 @@
 @property (nonatomic, assign) BOOL valueControlEnable;
 /** 是否初始化是显示到中线位置 */
 @property (nonatomic, assign) BOOL initialAtMiddle;
+/** 当前选中值 */
+@property (nonatomic, assign) CGFloat selectedValue;
 
 /**
  初始化

@@ -26,6 +26,7 @@
     slider.initialAtMiddle = YES;
     slider.titleColor = [UIColor blackColor];
     slider.hiddeUnderLine = YES;
+    slider.selectedValue = 1040;
     [self.view addSubview:slider];
 
 }

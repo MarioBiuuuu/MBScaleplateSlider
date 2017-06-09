@@ -322,6 +322,16 @@
 
     }
 }
+
+- (void)setSelectedValue:(CGFloat)selectedValue {
+    _selectedValue = selectedValue;
+    if (selectedValue < self.minValue || selectedValue > self.maxValue) {
+        self.realValue = round((_groupMaxNum * _stepNum) / 2.0);
+        return;
+    }
+    self.realValue = round((_groupMaxNum * _stepNum) * ((selectedValue - self.minValue) / (self.maxValue - self.minValue)));
+}
+
 - (void)setValueControlEnable:(BOOL)valueControlEnable {
     _valueControlEnable = valueControlEnable;
     self.valueTF.userInteractionEnabled = valueControlEnable;
