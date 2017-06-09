@@ -13,9 +13,9 @@
 #define kScaleplateTextRulerFont [UIFont systemFontOfSize:9]    // 文字Font
 
 #define kScaleplateGap 6        // 刻度间隔
-#define kScaleplateLong 18      // 最长刻度
-#define kScaleplateShort 9      // 最短刻度
-#define kScaleplateMiddle 13    // 中线刻度
+#define kScaleplateLong 24      // 最长刻度
+#define kScaleplateShort 12      // 最短刻度
+#define kScaleplateMiddle 18    // 中线刻度
 
 #pragma mark - Slider Content View
 @interface MBRulerView : UIView
@@ -64,7 +64,7 @@
             
             NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont,NSForegroundColorAttributeName:kScaleplateTextColor};
             CGFloat width = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size.width;
-            [num drawInRect:CGRectMake(startX + kScaleplateGap * i - width / 2.0, kScaleplateLong + 14, width, 14) withAttributes:attribute];
+            [num drawInRect:CGRectMake(startX + kScaleplateGap * i - width / 2.0, kScaleplateLong + 5, width, 14) withAttributes:attribute];
             CGContextAddLineToPoint(context,startX + kScaleplateGap * i,  kScaleplateLong);
         } else {
             if (_hasMiddleLine) { // 显示中线刻度
@@ -100,6 +100,7 @@
 @implementation MBRightRulerView
 
 - (void)drawRect:(CGRect)rect {
+
     CGFloat longLineY = 0;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -119,7 +120,7 @@
     
     NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont, NSForegroundColorAttributeName:kScaleplateTextColor};
     CGFloat width = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size.width;
-    [num drawInRect:CGRectMake(0 - width / 2.0, kScaleplateLong + 14, width, 14) withAttributes:attribute];
+    [num drawInRect:CGRectMake(0 - width / 2.0, kScaleplateLong  + 5, width, 14) withAttributes:attribute];
     
     CGContextAddLineToPoint(context,0, kScaleplateLong);
     CGContextStrokePath(context);
@@ -157,7 +158,7 @@
     
     NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont,NSForegroundColorAttributeName:kScaleplateTextColor};
     CGFloat width = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size.width;
-    [num drawInRect:CGRectMake(rect.size.width-width/2, kScaleplateLong+14, width, 14) withAttributes:attribute];
+    [num drawInRect:CGRectMake(rect.size.width-width/2, kScaleplateLong + 5, width, 14) withAttributes:attribute];
     
     CGContextAddLineToPoint(context,rect.size.width, kScaleplateLong);
     CGContextStrokePath(context);
@@ -177,7 +178,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         MBRulerView *ruleView = [[MBRulerView alloc] init];
-        ruleView.backgroundColor = [UIColor whiteColor];
+        ruleView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:ruleView];
         self.rulerView = ruleView;
     }
@@ -236,13 +237,12 @@
 }
 
 - (void)initialUI {
-    // 数值显示
-    [self addSubview:self.valueTF];
     
     // 标尺
     [self addSubview:self.collectionView];
     
-    
+    // 数值显示
+    [self addSubview:self.valueTF];
     
     // 标尺选中线
     [self addSubview:self.tintLine];
@@ -251,7 +251,7 @@
 #pragma mark - lazy load
 - (UIImageView *)tintLine {
     if (!_tintLine) {
-        _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMaxY(_valueTF.frame)+5, 1.5, 45)];
+        _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kScaleplateLong)];
         _tintLine.backgroundColor = [UIColor orangeColor];
     }
     return _tintLine;
@@ -259,7 +259,7 @@
 
 - (UITextField *)valueTF {
     if (!_valueTF) {
-        _valueTF = [[UITextField alloc]initWithFrame:CGRectMake(0, 10, self.frame.size.width, 20)];
+        _valueTF = [[UITextField alloc]initWithFrame:CGRectMake(0, CGRectGetMinY(self.collectionView.frame) - 20 - 10, self.frame.size.width, 20)];
         _valueTF.defaultTextAttributes = @{NSUnderlineColorAttributeName:[UIColor orangeColor],
                                            NSUnderlineStyleAttributeName:@(1),
                                            NSFontAttributeName:[UIFont systemFontOfSize:18],
@@ -267,7 +267,7 @@
         _valueTF.textAlignment = NSTextAlignmentCenter;
         _valueTF.delegate = self;
         _valueTF.keyboardType  = UIKeyboardTypeNumberPad;
-        
+        _valueTF.userInteractionEnabled = NO;
         NSDictionary *attribute = @{NSUnderlineColorAttributeName:[UIColor lightGrayColor],
                                     NSUnderlineStyleAttributeName:@(1),
                                     NSFontAttributeName:[UIFont systemFontOfSize:12],
@@ -284,13 +284,12 @@
         [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
         [flowLayout setSectionInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         _collectionView  =[[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_valueTF.frame) + 20, self.bounds.size.width, 50) collectionViewLayout:flowLayout];
-        self.backgroundColor = [UIColor whiteColor];
-        _collectionView.backgroundColor = [UIColor redColor];
+        _collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 20);
         
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"borderLeftCell"];
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"borderRightCell"];
         [_collectionView registerClass:[MBRulerCollectionViewCell class] forCellWithReuseIdentifier:@"contentCell"];
-        
+        _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.bounces = NO;
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.showsVerticalScrollIndicator = NO;
@@ -378,7 +377,8 @@
             
             if (![cell viewWithTag:10001]) {
                 MBLeftRulerView *leftView = [[MBLeftRulerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width/2, 50)];
-                leftView.backgroundColor = [UIColor whiteColor];
+                leftView.backgroundColor = self.backgroundColor;
+
                 leftView.minValue = _minValue;
                 leftView.unit = _unit;
                 leftView.tag = 10001;
@@ -389,7 +389,8 @@
             UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"borderRightCell" forIndexPath:indexPath];
             if (![cell viewWithTag:10002]) {
                 MBRightRulerView *rightView = [[MBRightRulerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width/2, 50)];
-                rightView.backgroundColor = [UIColor whiteColor];
+                rightView.backgroundColor = self.backgroundColor;
+
 //                rightView.maxValue = _maxValue;
                 // 用以解决设置的配置信息难以满足显示逻辑 比如步长 总数 最大值 最小值 不匹配
                 rightView.maxValue = _minValue + _stepNum * _groupMaxNum * _step;

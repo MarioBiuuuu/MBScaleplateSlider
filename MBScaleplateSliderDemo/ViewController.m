@@ -18,17 +18,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MBScaleplateSlider *slider  = [MBScaleplateSlider sliderWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 120) minValue:1000 maxValue:2000 step:10 groupMaxNum:10 unit:@"nian" hasMiddleLine:YES];
-    
+    MBScaleplateSlider *slider  = [MBScaleplateSlider sliderWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 120) minValue:1000 maxValue:1200 step:10 groupMaxNum:10 unit:@"" hasMiddleLine:YES];
+    slider.backgroundColor = [UIColor whiteColor];
     
     slider.delegate = self;
-    slider.tintLineColor = [UIColor redColor];
+    slider.tintLineColor = [UIColor greenColor];
     slider.initialAtMiddle = YES;
     
     [self.view addSubview:slider];
 
-    
-    
 }
 
 - (void)MBScaleplateSlider:(MBScaleplateSlider *)slider valueChange:(NSUInteger)value {
