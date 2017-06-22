@@ -202,6 +202,12 @@
 /** 记录当前是否处于滑动动画中 */
 @property (nonatomic, assign) BOOL onScroll;
 
+@property (nonatomic, strong) UIView *leftHUDView;
+@property (nonatomic, strong) UIView *rightHUDView;
+/** 左右两个蒙版视图的颜色，默认白色 */
+@property (nonatomic, strong) UIColor *hudLayerColor;
+/** 是否显示左右两个蒙版 */
+@property (nonatomic, assign) BOOL showHUDLayer;
 @end
 
 @implementation MBScaleplateSlider
@@ -246,9 +252,29 @@
     
     // 标尺选中线
     [self addSubview:self.tintLine];
+    
+    [self addSubview:self.leftHUDView];
+    
+    [self addSubview:self.rightHUDView];
 }
 
 #pragma mark - lazy load
+- (UIView *)leftHUDView {
+    if (!_leftHUDView) {
+        _leftHUDView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width / 5.0, CGRectGetHeight(self.frame))];
+        _leftHUDView.backgroundColor = [UIColor clearColor];
+    }
+    return _leftHUDView;
+}
+
+- (UIView *)rightHUDView {
+    if (!_rightHUDView) {
+        _rightHUDView = [[UIView alloc] initWithFrame:CGRectMake([UIScreen mainScreen].bounds.size.width - [UIScreen mainScreen].bounds.size.width / 5.0, 0, [UIScreen mainScreen].bounds.size.width / 5.0, CGRectGetHeight(self.frame))];
+        _rightHUDView.backgroundColor = self.backgroundColor;
+    }
+    return _rightHUDView;
+}
+
 - (UIImageView *)tintLine {
     if (!_tintLine) {
         _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kScaleplateLong)];
@@ -354,6 +380,93 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(MBScaleplateSlider:valueChange:)]) {
         [self.delegate MBScaleplateSlider:self valueChange:(realValue * _step + _minValue)];
     }
+}
+
+- (void)addSideLayerWithColor:(UIColor *)layerColor {
+    if (layerColor) {
+        _hudLayerColor = layerColor;
+    } else {
+        _hudLayerColor = [UIColor whiteColor];
+    }
+    if ([self.leftHUDView viewWithTag:9099]) {
+        [[self.leftHUDView viewWithTag:9099] removeFromSuperview];
+    }
+    
+    if ([self.rightHUDView viewWithTag:9099]) {
+        [[self.rightHUDView viewWithTag:9099] removeFromSuperview];
+    }
+    
+    [self setSideLayer:self.leftHUDView];
+    [self setSideLayer:self.rightHUDView];
+}
+
+- (void)setSideLayer:(UIView *)originalView {
+    UIView *gradView = [[UIView alloc] initWithFrame:originalView.bounds];
+    gradView.tag = 9099;
+    gradView.backgroundColor = [UIColor clearColor];
+    gradView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    CAGradientLayer *layer = [self getGradientWithFrame:gradView.bounds left:[originalView isEqual:self.leftHUDView]];
+    [gradView.layer insertSublayer:layer atIndex:0];
+    [originalView addSubview:gradView];
+    
+}
+
+- (CAGradientLayer *)getGradientWithFrame:(CGRect)frame left:(BOOL)left {
+    
+   // const CGFloat *components = CGColorGetComponents(_hudLayerColor.CGColor);
+    
+    CGFloat components[3];
+    [self getRGBComponents:components forColor:_hudLayerColor];
+    NSLog(@"%f %f %f", components[0], components[1], components[2]);
+
+    CGFloat red = components[0];
+    CGFloat green = components[1];
+    CGFloat blue = components[2];
+    
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    
+    gradientLayer.frame = frame;
+    if (left) {
+        gradientLayer.colors = @[(id)[UIColor colorWithRed:red green:green blue:blue alpha:0.4].CGColor,
+                                 (id)[UIColor colorWithRed:red green:green blue:blue alpha:0.6].CGColor,
+                                 (id)[UIColor colorWithRed:red green:green blue:blue alpha:1].CGColor];
+        gradientLayer.startPoint = CGPointMake(1, 0);
+        gradientLayer.endPoint = CGPointMake(0, 0);
+
+    } else {
+        gradientLayer.colors = @[(id)[UIColor colorWithRed:red green:green blue:blue alpha:0.4].CGColor,
+                                 (id)[UIColor colorWithRed:red green:green blue:blue alpha:0.6].CGColor,
+                                 (id)[UIColor colorWithRed:red green:green blue:blue alpha:1].CGColor];
+        gradientLayer.startPoint = CGPointMake(0, 0);
+        gradientLayer.endPoint = CGPointMake(1, 0);
+    }
+    gradientLayer.locations = @[@(0.1f) ,@(0.4f)];
+
+    return gradientLayer;
+}
+
+- (void)getRGBComponents:(CGFloat [3])components forColor:(UIColor *)color {
+    
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    unsigned char resultingPixel[4];
+    
+    CGContextRef context = CGBitmapContextCreate(&resultingPixel, 1, 1, 8, 4, rgbColorSpace, (CGBitmapInfo)kCGImageAlphaNoneSkipLast);
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    
+    CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
+    
+    CGContextRelease(context);
+    
+    CGColorSpaceRelease(rgbColorSpace);
+    
+    for (int component = 0; component < 3; component++) {
+        
+        components[component] = resultingPixel[component] / 255.0f;
+        
+    }
+    
 }
 
 #pragma UITextField Delegate

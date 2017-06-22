@@ -74,5 +74,12 @@
  */
 - (instancetype)initWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine;
 
+/**
+ 设置左右两侧蒙版
+
+ @param layerColor 蒙版颜色 nil默认为白色
+ */
+- (void)addSideLayerWithColor:(UIColor *)layerColor;
+
 @end
 
