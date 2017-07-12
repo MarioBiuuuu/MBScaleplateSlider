@@ -232,6 +232,10 @@
         
         // 计算分组数量 （最大值-最小值）/ 步长 / 一组数量
         _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
+        if (_stepNum == 0) {
+            _step = 1;
+            _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
+        }
 
         // 初始化当前处于非滑动动画状态
         _onScroll = NO;
