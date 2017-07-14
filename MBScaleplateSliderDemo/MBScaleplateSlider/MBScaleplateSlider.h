@@ -45,7 +45,8 @@
 @property (nonatomic, assign) BOOL initialAtMiddle;
 /** 当前选中值 */
 @property (nonatomic, assign) CGFloat selectedValue;
-
+/** 设置顶部文本是否显示 默认为no */
+@property (nonatomic, assign) BOOL titleTextHidden;
 /**
  初始化
 

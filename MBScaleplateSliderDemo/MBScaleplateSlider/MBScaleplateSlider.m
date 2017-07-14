@@ -304,6 +304,8 @@
                                     NSForegroundColorAttributeName:[UIColor grayColor]};
         _valueTF.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"滑动标尺或输入" attributes:attribute];
         _valueTF.text = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
+        _valueTF.hidden = self.titleTextHidden;
+
     }
     return _valueTF;
 }
@@ -315,7 +317,11 @@
         [flowLayout setSectionInset:UIEdgeInsetsMake(0, 0, 0, 0)];
         _collectionView  =[[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_valueTF.frame) + 20, self.bounds.size.width, 50) collectionViewLayout:flowLayout];
         _collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 20);
-        
+        if (self.titleTextHidden) {
+            _collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 5);
+        } else {
+            _collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 20);
+        }
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"borderLeftCell"];
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"borderRightCell"];
         [_collectionView registerClass:[MBRulerCollectionViewCell class] forCellWithReuseIdentifier:@"contentCell"];
@@ -330,6 +336,17 @@
 }
 
 #pragma setter
+- (void)setTitleTextHidden:(BOOL)titleTextHidden {
+    _titleTextHidden = titleTextHidden;
+    self.valueTF.hidden = titleTextHidden;
+    if (titleTextHidden) {
+        self.collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 5);
+    } else {
+        self.collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 20);
+    }
+    self.tintLine.frame = CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kScaleplateLong);
+}
+
 - (void)setTitleColor:(UIColor *)titleColor {
     if (!titleColor) {
         _titleColor = [UIColor orangeColor];
