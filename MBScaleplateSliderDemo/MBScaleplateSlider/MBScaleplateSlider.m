@@ -219,9 +219,26 @@
 - (instancetype)initWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
     if(self = [super initWithFrame:frame]) {
         
-        NSAssert(maxValue > 0, @"标尺最大值取值区间为大于0");
-        NSAssert(minValue >= 0, @"标尺最小值区间为大于等于0");
-        NSAssert(maxValue > minValue, @"标尺最大值不能小于设置的最小值");
+        //        NSAssert(maxValue > 0, @"标尺最大值取值区间为大于0");
+        //        NSAssert(minValue >= 0, @"标尺最小值区间为大于等于0");
+        //        NSAssert(maxValue > minValue, @"标尺最大值不能小于设置的最小值");
+        
+        if (maxValue <= 0) {
+            maxValue = 100;
+        }
+        
+        if (minValue <= 0) {
+            minValue = 0;
+        }
+        
+        if (maxValue <= minValue) {
+            maxValue = 100;
+            minValue = 0;
+        }
+        
+        if (minValue + step * groupMaxNum > maxValue) {
+            step = 1;
+        }
         
         _minValue = minValue;
         _maxValue = maxValue;

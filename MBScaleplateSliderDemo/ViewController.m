@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor greenColor];
-    MBScaleplateSlider *slider  = [MBScaleplateSlider sliderWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 120) minValue:0 maxValue:1200 step:10 groupMaxNum:10 unit:@"" hasMiddleLine:YES];
+    MBScaleplateSlider *slider  = [MBScaleplateSlider sliderWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 80) minValue:0 maxValue:1200 step:10 groupMaxNum:10 unit:@"" hasMiddleLine:YES];
     slider.backgroundColor = [UIColor whiteColor];
     
     slider.delegate = self;

@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "MBScaleplateSlider"
-  s.version      = "1.0.6"
+  s.version      = "1.0.7"
   s.summary      = "iOS仿标尺 Slider滑动选择器"
 
   # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-                    iOS仿标尺 定制 Slider，可设置最大最小值以及一组显示刻度数量, 1.0.6 增加标题开关
+                    iOS仿标尺 定制 Slider，可设置最大最小值以及一组显示刻度数量, 1.0.7 调整
                    DESC
 
   s.homepage     = "https://github.com/MarioBiuuuu/MBScaleplateSlider"
