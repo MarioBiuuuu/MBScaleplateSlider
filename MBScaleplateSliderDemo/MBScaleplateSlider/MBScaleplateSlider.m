@@ -231,6 +231,10 @@
             minValue = 0;
         }
         
+        if (step <= 0) {
+            step = 1;
+        }
+        
         if (maxValue <= minValue) {
             maxValue = 100;
             minValue = 0;
