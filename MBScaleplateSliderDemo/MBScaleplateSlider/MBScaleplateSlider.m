@@ -324,7 +324,7 @@
                                     NSFontAttributeName:[UIFont systemFontOfSize:18],
                                     NSForegroundColorAttributeName:[UIColor grayColor]};
         _valueTF.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"滑动标尺或输入" attributes:attribute];
-        _valueTF.text = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
+        _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_minValue), _unit];
         _valueTF.hidden = self.titleTextHidden;
 
     }
@@ -414,7 +414,7 @@
     _realValue = realValue;
     
     // 设置数值显示
-    _valueTF.text = [NSString stringWithFormat:@"%@%@",@(_realValue * _step + _minValue), _unit];
+    _valueTF.text = [NSString stringWithFormat:@"%.1f%@",(_realValue * _step + _minValue), _unit];
     
     // collection 偏移至指定位置
     [_collectionView setContentOffset:CGPointMake((int)realValue*kScaleplateGap, 0) animated:YES];
@@ -516,7 +516,7 @@
     
     NSString *newStr = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if ([newStr intValue] > _maxValue) {
-        _valueTF.text = [NSString stringWithFormat:@"%@%@", @(_maxValue), _unit];
+        _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_maxValue), _unit];
         [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
         return NO;
     } else {
@@ -610,7 +610,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (_onScroll) {
         NSUInteger value = scrollView.contentOffset.x / (kScaleplateGap);
-        _valueTF.text = [NSString stringWithFormat:@"%@%@", @(value * _step + _minValue), _unit];
+        _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (value * _step + _minValue), _unit];
     }
 }
 
