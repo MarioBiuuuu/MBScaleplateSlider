@@ -651,22 +651,6 @@
     if (_onScroll) {
         NSUInteger value = scrollView.contentOffset.x / (kScaleplateGap);
         _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (value * _step + _minValue), _unit];
-        if (self.openIgnore) {
-            if (self.ignoreValue == 0) {
-                if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
-                    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
-                    [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
-
-                }
-            } else {
-                if ([_valueTF.text floatValue] <= _ignoreValue) {
-                    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
-                    [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
-                    
-                }
-            }
-        }
-
     }
 }
 
@@ -682,12 +666,18 @@
                     _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
                     [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
                     
+                } else {
+                    self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
+
                 }
             } else {
                 if ([_valueTF.text floatValue] <= _ignoreValue) {
                     _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
                     [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
                     
+                } else {
+                    self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
+
                 }
             }
         } else {
