@@ -405,11 +405,38 @@
     }
     self.realValue = round((_groupMaxNum * _stepNum) * ((selectedValue - self.minValue) / (self.maxValue - self.minValue)));
     _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (selectedValue), _unit];
+    
+    if (self.openIgnore) {
+        if (self.ignoreValue == 0) {
+            if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
+                _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
+                [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+            }
+        } else {
+            if ([_valueTF.text floatValue] <= _ignoreValue) {
+                _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
+                [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+                
+            }
+        }
+    }
+}
 
-    if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
-        _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
-        [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
-        
+- (void)setIgnoreValue:(CGFloat)ignoreValue {
+    _ignoreValue = ignoreValue;
+    
+    if (self.ignoreValue == 0) {
+        if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
+            _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
+            [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+            
+        }
+    } else {
+        if ([_valueTF.text floatValue] <= _ignoreValue) {
+            _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
+            [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+            
+        }
     }
 }
 
@@ -430,7 +457,7 @@
     _valueTF.text = [NSString stringWithFormat:@"%.1f%@",(_realValue * _step + _minValue), _unit];
     
     // collection 偏移至指定位置
-    [_collectionView setContentOffset:CGPointMake((int)realValue*kScaleplateGap, 0) animated:YES];
+    [_collectionView setContentOffset:CGPointMake((int)realValue*kScaleplateGap, 0) animated:NO];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(MBScaleplateSlider:valueChange:)]) {
         [self.delegate MBScaleplateSlider:self valueChange:(realValue * _step + _minValue)];
@@ -624,11 +651,22 @@
     if (_onScroll) {
         NSUInteger value = scrollView.contentOffset.x / (kScaleplateGap);
         _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (value * _step + _minValue), _unit];
-        if ([_valueTF.text floatValue] > -0.000001 && [_valueTF.text floatValue] < 0.000001) {
-            _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
-            [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+        if (self.openIgnore) {
+            if (self.ignoreValue == 0) {
+                if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
+                    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
+                    [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
 
+                }
+            } else {
+                if ([_valueTF.text floatValue] <= _ignoreValue) {
+                    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
+                    [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+                    
+                }
+            }
         }
+
     }
 }
 
@@ -638,8 +676,8 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) { // 拖拽时没有处于滑动动画状态
-        if (round(scrollView.contentOffset.x/(kScaleplateGap)) == 0) {
-            self.realValue = _step;
+        if (round(scrollView.contentOffset.x/(kScaleplateGap)) <= _ignoreValue && self.openIgnore) {
+            self.realValue = _ignoreValue + _step;
         } else {
             self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
         }
