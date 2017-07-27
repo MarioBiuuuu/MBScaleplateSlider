@@ -676,8 +676,20 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) { // 拖拽时没有处于滑动动画状态
-        if (round(scrollView.contentOffset.x/(kScaleplateGap)) <= _ignoreValue && self.openIgnore) {
-            self.realValue = _ignoreValue + _step;
+        if (self.openIgnore) {
+            if (self.ignoreValue == 0) {
+                if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
+                    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
+                    [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+                    
+                }
+            } else {
+                if ([_valueTF.text floatValue] <= _ignoreValue) {
+                    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
+                    [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+                    
+                }
+            }
         } else {
             self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
         }
