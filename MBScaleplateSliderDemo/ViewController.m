@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor greenColor];
-    MBScaleplateSlider *slider  = [MBScaleplateSlider sliderWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 80) minValue:0 maxValue:1200 step:10 groupMaxNum:10 unit:@"" hasMiddleLine:YES];
+    MBScaleplateSlider *slider  = [MBScaleplateSlider sliderWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 80) minValue:0 maxValue:14 step:1 groupMaxNum:10 unit:@"" hasMiddleLine:YES];
     slider.backgroundColor = [UIColor whiteColor];
     
     slider.delegate = self;
@@ -26,8 +26,10 @@
     slider.initialAtMiddle = YES;
     slider.titleColor = [UIColor blackColor];
     slider.hiddeUnderLine = YES;
-    slider.selectedValue = 1040;
-    slider.titleTextHidden = YES;
+    slider.selectedValue = 0;
+    slider.titleTextHidden = NO;
+    slider.openIgnore = YES;
+    slider.ignoreValue = 0;
     [slider addSideLayerWithColor:nil];
     [self.view addSubview:slider];
 

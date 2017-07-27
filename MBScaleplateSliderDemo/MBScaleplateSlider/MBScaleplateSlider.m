@@ -253,10 +253,16 @@
         
         // 计算分组数量 （最大值-最小值）/ 步长 / 一组数量
         _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
-        if (_stepNum == 0) {
-            _step = 1;
-            _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
+//        if (_stepNum == 0) {
+//            _step = 1;
+//            _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
+//        }
+        
+        if (_stepNum * groupMaxNum * _step < (_maxValue - _minValue)) {
+            _stepNum += 1;
         }
+        
+        _maxValue = _stepNum * groupMaxNum * _step + _minValue;
 
         // 初始化当前处于非滑动动画状态
         _onScroll = NO;
@@ -398,6 +404,13 @@
         return;
     }
     self.realValue = round((_groupMaxNum * _stepNum) * ((selectedValue - self.minValue) / (self.maxValue - self.minValue)));
+    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (selectedValue), _unit];
+
+    if ([_valueTF.text floatValue] > (_ignoreValue-0.000001) && [_valueTF.text floatValue] < (0.000001 + _ignoreValue)) {
+        _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
+        [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+        
+    }
 }
 
 - (void)setValueControlEnable:(BOOL)valueControlEnable {
@@ -611,6 +624,11 @@
     if (_onScroll) {
         NSUInteger value = scrollView.contentOffset.x / (kScaleplateGap);
         _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (value * _step + _minValue), _unit];
+        if ([_valueTF.text floatValue] > -0.000001 && [_valueTF.text floatValue] < 0.000001) {
+            _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step), _unit];
+            [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
+
+        }
     }
 }
 
@@ -620,7 +638,11 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) { // 拖拽时没有处于滑动动画状态
-        self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
+        if (round(scrollView.contentOffset.x/(kScaleplateGap)) == 0) {
+            self.realValue = _step;
+        } else {
+            self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
+        }
     }
 }
 

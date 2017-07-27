@@ -18,7 +18,10 @@
 @end
 
 @interface MBScaleplateSlider : UIView
-
+/** 开关忽略数值 */
+@property (nonatomic, assign) BOOL openIgnore;
+/** 忽略数值 */
+@property (nonatomic, assign) CGFloat ignoreValue;
 /** 最小值 */
 @property (nonatomic, assign, readonly) CGFloat minValue;
 /** 最大值 */
