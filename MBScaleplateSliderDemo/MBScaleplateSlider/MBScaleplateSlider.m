@@ -10,12 +10,12 @@
 
 #define kScaleplateColor [UIColor greenColor]       // 刻度的颜色
 #define kScaleplateTextColor [UIColor grayColor]    // 文字的颜色灰度
-#define kScaleplateTextRulerFont [UIFont systemFontOfSize:9]    // 文字Font
+#define kScaleplateTextRulerFont [UIFont systemFontOfSize:11]    // 文字Font
 
 #define kScaleplateGap 6        // 刻度间隔
-#define kScaleplateLong 24      // 最长刻度
-#define kScaleplateShort 12      // 最短刻度
-#define kScaleplateMiddle 18    // 中线刻度
+#define kScaleplateLong 28      // 最长刻度
+#define kScaleplateShort 14      // 最短刻度
+#define kScaleplateMiddle 22    // 中线刻度
 
 #pragma mark - Slider Content View
 @interface MBRulerView : UIView
@@ -56,15 +56,16 @@
         if (i%_maxGroupNum == 0) { // 当前为最大刻度值
             CGContextMoveToPoint(context,startX + kScaleplateGap * i, 0); // x = 起使点 + 刻度间隔 * 刻度数
             
-            NSString *num = [NSString stringWithFormat:@"%.f%@", (i * step + _minValue), _unit];
-            
+//            NSString *num = [NSString stringWithFormat:@"%.f%@", (i * step + _minValue), _unit];
+            NSString *num = [NSString stringWithFormat:@"%.f", (i * step + _minValue)];
             if ([num floatValue] > 1000000) { // 超过1000000后 格式化显示样式
-                num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
+//                num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
+                num = [NSString stringWithFormat:@"%.f万",[num floatValue]/10000.f];
             }
             
             NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont,NSForegroundColorAttributeName:kScaleplateTextColor};
-            CGFloat width = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size.width;
-            [num drawInRect:CGRectMake(startX + kScaleplateGap * i - width / 2.0, kScaleplateLong + 5, width, 14) withAttributes:attribute];
+            CGSize size = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size;
+            [num drawInRect:CGRectMake(startX + kScaleplateGap * i - size.width / 2.0, kScaleplateLong + 5, size.width, size.height + 3) withAttributes:attribute];
             CGContextAddLineToPoint(context,startX + kScaleplateGap * i,  kScaleplateLong);
         } else {
             if (_hasMiddleLine) { // 显示中线刻度
@@ -113,14 +114,16 @@
     CGContextSetLineCap(context, kCGLineCapButt);
     
     CGContextMoveToPoint(context, 0, longLineY);
-    NSString *num = [NSString stringWithFormat:@"%@%@", @(_maxValue), _unit];
+//    NSString *num = [NSString stringWithFormat:@"%@%@", @(_maxValue), _unit];
+    NSString *num = [NSString stringWithFormat:@"%@", @(_maxValue)];
     if ([num floatValue] > 1000000) { // 超过1000000后 格式化显示样式
-        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
+//        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
+        num = [NSString stringWithFormat:@"%.f万",[num floatValue]/10000.f];
     }
     
     NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont, NSForegroundColorAttributeName:kScaleplateTextColor};
-    CGFloat width = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size.width;
-    [num drawInRect:CGRectMake(0 - width / 2.0, kScaleplateLong  + 5, width, 14) withAttributes:attribute];
+    CGSize size = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size;
+    [num drawInRect:CGRectMake(0 - size.width / 2.0, kScaleplateLong  + 5, size.width, size.height + 3) withAttributes:attribute];
     
     CGContextAddLineToPoint(context,0, kScaleplateLong);
     CGContextStrokePath(context);
@@ -151,14 +154,16 @@
     CGContextSetLineCap(context, kCGLineCapButt);
     
     CGContextMoveToPoint(context, rect.size.width, longLineY);
-    NSString *num = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
+//    NSString *num = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
+    NSString *num = [NSString stringWithFormat:@"%@", @(_minValue)];
     if ([num floatValue] > 1000000) { // 超过1000000后 格式化显示样式
-        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue] / 10000.f, _unit];
+//        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue] / 10000.f, _unit];
+        num = [NSString stringWithFormat:@"%.f万",[num floatValue] / 10000.f];
     }
     
     NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont,NSForegroundColorAttributeName:kScaleplateTextColor};
-    CGFloat width = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size.width;
-    [num drawInRect:CGRectMake(rect.size.width-width/2, kScaleplateLong + 5, width, 14) withAttributes:attribute];
+    CGSize size = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size;
+    [num drawInRect:CGRectMake(rect.size.width-size.width/2, kScaleplateLong + 5, size.width, size.height + 3) withAttributes:attribute];
     
     CGContextAddLineToPoint(context,rect.size.width, kScaleplateLong);
     CGContextStrokePath(context);
@@ -674,7 +679,6 @@
                 if ([_valueTF.text floatValue] <= _ignoreValue) {
                     _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
                     [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
-                    
                 } else {
                     self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
 

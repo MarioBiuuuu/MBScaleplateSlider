@@ -50,6 +50,15 @@
 @property (nonatomic, assign) CGFloat selectedValue;
 /** 设置顶部文本是否显示 默认为no */
 @property (nonatomic, assign) BOOL titleTextHidden;
+/** 标尺刻度文字大小 */
+@property (nonatomic, strong) UIFont *textFont;
+/** 标尺最长刻度线 */
+@property (nonatomic, assign) CGFloat scaleplateLong;
+/** 标尺中间刻度线 */
+@property (nonatomic, assign) CGFloat scaleplateMiddle;
+/** 标尺最短刻度线 */
+@property (nonatomic, assign) CGFloat scaleplateShort;
+
 /**
  初始化
 
