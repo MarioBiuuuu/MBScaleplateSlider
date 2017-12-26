@@ -18,6 +18,12 @@
 #define kScaleplateMiddle 22    // 中线刻度
 
 #pragma mark - Slider Content View
+
+CGFloat kMBRulerScaleplateGap;
+CGFloat kMBRulerScaleplateLong;
+CGFloat kMBRulerScaleplateShort;
+CGFloat kMBRulerScaleplateMiddle;
+
 @interface MBRulerView : UIView
 /** 最小值 */
 @property (nonatomic, assign) CGFloat minValue;
@@ -35,7 +41,7 @@
 
 /**
  绘制标尺内容
-
+ 
  @param rect rect
  */
 - (void)drawRect:(CGRect)rect {
@@ -48,39 +54,39 @@
     CGContextSetStrokeColorWithColor(context, [UIColor darkGrayColor].CGColor);
     
     // 设置线的颜色, 如果不设置默认是黑色的
-//    CGContextSetRGBStrokeColor(context, dialColorGrayscale, dialColorGrayscale, dialColorGrayscale, 1);
+    //    CGContextSetRGBStrokeColor(context, dialColorGrayscale, dialColorGrayscale, dialColorGrayscale, 1);
     
     CGContextSetLineWidth(context, 0.5);//设置线的宽度, 默认是1像素
     CGContextSetLineCap(context, kCGLineCapButt);
     for (int i = 0; i<=_maxGroupNum; i++) { // 一个格子内最大刻度数量遍历
         if (i%_maxGroupNum == 0) { // 当前为最大刻度值
-            CGContextMoveToPoint(context,startX + kScaleplateGap * i, 0); // x = 起使点 + 刻度间隔 * 刻度数
+            CGContextMoveToPoint(context,startX + kMBRulerScaleplateGap * i, 0); // x = 起使点 + 刻度间隔 * 刻度数
             
-//            NSString *num = [NSString stringWithFormat:@"%.f%@", (i * step + _minValue), _unit];
+            //            NSString *num = [NSString stringWithFormat:@"%.f%@", (i * step + _minValue), _unit];
             NSString *num = [NSString stringWithFormat:@"%.f", (i * step + _minValue)];
             if ([num floatValue] > 1000000) { // 超过1000000后 格式化显示样式
-//                num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
+                //                num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
                 num = [NSString stringWithFormat:@"%.f万",[num floatValue]/10000.f];
             }
             
             NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont,NSForegroundColorAttributeName:kScaleplateTextColor};
             CGSize size = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size;
-            [num drawInRect:CGRectMake(startX + kScaleplateGap * i - size.width / 2.0, kScaleplateLong + 5, size.width, size.height + 3) withAttributes:attribute];
-            CGContextAddLineToPoint(context,startX + kScaleplateGap * i,  kScaleplateLong);
+            [num drawInRect:CGRectMake(startX + kMBRulerScaleplateGap * i - size.width / 2.0, kMBRulerScaleplateLong + 5, size.width, size.height + 3) withAttributes:attribute];
+            CGContextAddLineToPoint(context,startX + kMBRulerScaleplateGap * i,  kMBRulerScaleplateLong);
         } else {
             if (_hasMiddleLine) { // 显示中线刻度
                 if (ceil(_maxGroupNum * 0.5) == i) { // 中线刻度点
-                    CGContextMoveToPoint(context,startX +  kScaleplateGap*i, 0);//起使点
-                    CGContextAddLineToPoint(context,startX +  kScaleplateGap*i, kScaleplateMiddle);
+                    CGContextMoveToPoint(context,startX +  kMBRulerScaleplateGap*i, 0);//起使点
+                    CGContextAddLineToPoint(context,startX +  kMBRulerScaleplateGap*i, kMBRulerScaleplateMiddle);
                     
                 } else {
-                    CGContextMoveToPoint(context,startX +  kScaleplateGap*i, 0);//起使点
-                    CGContextAddLineToPoint(context,startX +  kScaleplateGap*i, kScaleplateShort);
+                    CGContextMoveToPoint(context,startX +  kMBRulerScaleplateGap*i, 0);//起使点
+                    CGContextAddLineToPoint(context,startX +  kMBRulerScaleplateGap*i, kMBRulerScaleplateShort);
                     
                 }
             } else {
-                CGContextMoveToPoint(context,startX +  kScaleplateGap*i, 0);//起使点
-                CGContextAddLineToPoint(context,startX +  kScaleplateGap*i, kScaleplateShort);
+                CGContextMoveToPoint(context,startX +  kMBRulerScaleplateGap*i, 0);//起使点
+                CGContextAddLineToPoint(context,startX +  kMBRulerScaleplateGap*i, kMBRulerScaleplateShort);
                 
             }
         }
@@ -101,31 +107,31 @@
 @implementation MBRightRulerView
 
 - (void)drawRect:(CGRect)rect {
-
+    
     CGFloat longLineY = 0;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     // 设置线的颜色, 如果不设置默认是黑色的
-//    CGContextSetRGBStrokeColor(context, dialColorGrayscale, dialColorGrayscale, dialColorGrayscale, 1);
+    //    CGContextSetRGBStrokeColor(context, dialColorGrayscale, dialColorGrayscale, dialColorGrayscale, 1);
     
     CGContextSetStrokeColorWithColor(context, kScaleplateColor.CGColor);
     // 设置线的宽度, 默认是1像素
-//    CGContextSetLineWidth(context, 1.0);
+    //    CGContextSetLineWidth(context, 1.0);
     CGContextSetLineCap(context, kCGLineCapButt);
     
     CGContextMoveToPoint(context, 0, longLineY);
-//    NSString *num = [NSString stringWithFormat:@"%@%@", @(_maxValue), _unit];
+    //    NSString *num = [NSString stringWithFormat:@"%@%@", @(_maxValue), _unit];
     NSString *num = [NSString stringWithFormat:@"%@", @(_maxValue)];
     if ([num floatValue] > 1000000) { // 超过1000000后 格式化显示样式
-//        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
+        //        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue]/10000.f, _unit];
         num = [NSString stringWithFormat:@"%.f万",[num floatValue]/10000.f];
     }
     
     NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont, NSForegroundColorAttributeName:kScaleplateTextColor};
     CGSize size = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size;
-    [num drawInRect:CGRectMake(0 - size.width / 2.0, kScaleplateLong  + 5, size.width, size.height + 3) withAttributes:attribute];
+    [num drawInRect:CGRectMake(0 - size.width / 2.0, kMBRulerScaleplateLong  + 5, size.width, size.height + 3) withAttributes:attribute];
     
-    CGContextAddLineToPoint(context,0, kScaleplateLong);
+    CGContextAddLineToPoint(context,0, kMBRulerScaleplateLong);
     CGContextStrokePath(context);
 }
 
@@ -154,18 +160,18 @@
     CGContextSetLineCap(context, kCGLineCapButt);
     
     CGContextMoveToPoint(context, rect.size.width, longLineY);
-//    NSString *num = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
+    //    NSString *num = [NSString stringWithFormat:@"%@%@", @(_minValue), _unit];
     NSString *num = [NSString stringWithFormat:@"%@", @(_minValue)];
     if ([num floatValue] > 1000000) { // 超过1000000后 格式化显示样式
-//        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue] / 10000.f, _unit];
+        //        num = [NSString stringWithFormat:@"%.f万%@",[num floatValue] / 10000.f, _unit];
         num = [NSString stringWithFormat:@"%.f万",[num floatValue] / 10000.f];
     }
     
     NSDictionary *attribute = @{NSFontAttributeName:kScaleplateTextRulerFont,NSForegroundColorAttributeName:kScaleplateTextColor};
     CGSize size = [num boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 attributes:attribute context:nil].size;
-    [num drawInRect:CGRectMake(rect.size.width-size.width/2, kScaleplateLong + 5, size.width, size.height + 3) withAttributes:attribute];
+    [num drawInRect:CGRectMake(rect.size.width-size.width/2, kMBRulerScaleplateLong + 5, size.width, size.height + 3) withAttributes:attribute];
     
-    CGContextAddLineToPoint(context,rect.size.width, kScaleplateLong);
+    CGContextAddLineToPoint(context,rect.size.width, kMBRulerScaleplateLong);
     CGContextStrokePath(context);
 }
 
@@ -216,6 +222,27 @@
 @end
 
 @implementation MBScaleplateSlider
+
+- (void)setScaleplateShort:(CGFloat)scaleplateShort {
+    _scaleplateShort = scaleplateShort;
+    kMBRulerScaleplateShort = scaleplateShort;
+}
+
+- (void)setScaleplateLong:(CGFloat)scaleplateLong {
+    _scaleplateLong = scaleplateLong;
+    kMBRulerScaleplateLong = scaleplateLong;
+}
+
+- (void)setScaleplateMiddle:(CGFloat)scaleplateMiddle {
+    _scaleplateMiddle = scaleplateMiddle;
+    kMBRulerScaleplateMiddle = scaleplateMiddle;
+}
+
+- (void)setScaleplateGap:(CGFloat)scaleplateGap {
+    _scaleplateGap = scaleplateGap;
+    kMBRulerScaleplateGap = scaleplateGap;
+}
+
 /** 初始化 */
 + (instancetype)sliderWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
     return [[self alloc] initWithFrame:frame minValue:minValue maxValue:maxValue step:step groupMaxNum:groupMaxNum unit:unit hasMiddleLine:hasMiddleLine];
@@ -227,6 +254,12 @@
         //        NSAssert(maxValue > 0, @"标尺最大值取值区间为大于0");
         //        NSAssert(minValue >= 0, @"标尺最小值区间为大于等于0");
         //        NSAssert(maxValue > minValue, @"标尺最大值不能小于设置的最小值");
+        
+        
+        kMBRulerScaleplateGap = kScaleplateGap;
+        kMBRulerScaleplateLong = kScaleplateLong;
+        kMBRulerScaleplateMiddle = kScaleplateMiddle;
+        kMBRulerScaleplateShort = kScaleplateShort;
         
         if (maxValue <= 0) {
             maxValue = 100;
@@ -258,17 +291,17 @@
         
         // 计算分组数量 （最大值-最小值）/ 步长 / 一组数量
         _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
-//        if (_stepNum == 0) {
-//            _step = 1;
-//            _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
-//        }
+        //        if (_stepNum == 0) {
+        //            _step = 1;
+        //            _stepNum = (_maxValue - _minValue) / _step / groupMaxNum;
+        //        }
         
         if (_stepNum * groupMaxNum * _step < (_maxValue - _minValue)) {
             _stepNum += 1;
         }
         
         _maxValue = _stepNum * groupMaxNum * _step + _minValue;
-
+        
         // 初始化当前处于非滑动动画状态
         _onScroll = NO;
         
@@ -313,7 +346,7 @@
 
 - (UIImageView *)tintLine {
     if (!_tintLine) {
-        _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kScaleplateLong)];
+        _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateLong)];
         _tintLine.backgroundColor = [UIColor orangeColor];
     }
     return _tintLine;
@@ -337,7 +370,7 @@
         _valueTF.attributedPlaceholder = [[NSAttributedString alloc]initWithString:@"滑动标尺或输入" attributes:attribute];
         _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_minValue), _unit];
         _valueTF.hidden = self.titleTextHidden;
-
+        
     }
     return _valueTF;
 }
@@ -376,7 +409,7 @@
     } else {
         self.collectionView.center = CGPointMake(CGRectGetWidth(self.frame) * 0.5, CGRectGetHeight(self.frame) * 0.5 + 20);
     }
-    self.tintLine.frame = CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kScaleplateLong);
+    self.tintLine.frame = CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateLong);
 }
 
 - (void)setTitleColor:(UIColor *)titleColor {
@@ -384,13 +417,13 @@
         _titleColor = [UIColor orangeColor];
     }
     _titleColor = titleColor;
-//    self.valueTF.textAlignment = NSTextAlignmentCenter;
-//    NSDictionary *attribute = @{NSUnderlineColorAttributeName:[UIColor lightGrayColor],
-//                                NSUnderlineStyleAttributeName:@(1),
-//                                NSFontAttributeName:[UIFont systemFontOfSize:18],
-//                                NSForegroundColorAttributeName:[UIColor grayColor]};
-//
-//    self.valueTF.defaultTextAttributes = attribute;
+    //    self.valueTF.textAlignment = NSTextAlignmentCenter;
+    //    NSDictionary *attribute = @{NSUnderlineColorAttributeName:[UIColor lightGrayColor],
+    //                                NSUnderlineStyleAttributeName:@(1),
+    //                                NSFontAttributeName:[UIFont systemFontOfSize:18],
+    //                                NSForegroundColorAttributeName:[UIColor grayColor]};
+    //
+    //    self.valueTF.defaultTextAttributes = attribute;
 }
 
 - (void)setInitialAtMiddle:(BOOL)initialAtMiddle {
@@ -398,7 +431,7 @@
     if (initialAtMiddle) {
         // 设置初次显示位置
         self.realValue = round((_groupMaxNum * _stepNum) / 2.0);
-
+        
     }
 }
 
@@ -462,7 +495,7 @@
     _valueTF.text = [NSString stringWithFormat:@"%.1f%@",(_realValue * _step + _minValue), _unit];
     
     // collection 偏移至指定位置
-    [_collectionView setContentOffset:CGPointMake((int)realValue*kScaleplateGap, 0) animated:NO];
+    [_collectionView setContentOffset:CGPointMake((int)realValue*kMBRulerScaleplateGap, 0) animated:NO];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(MBScaleplateSlider:valueChange:)]) {
         [self.delegate MBScaleplateSlider:self valueChange:(realValue * _step + _minValue)];
@@ -500,12 +533,12 @@
 
 - (CAGradientLayer *)getGradientWithFrame:(CGRect)frame left:(BOOL)left {
     
-   // const CGFloat *components = CGColorGetComponents(_hudLayerColor.CGColor);
+    // const CGFloat *components = CGColorGetComponents(_hudLayerColor.CGColor);
     
     CGFloat components[3];
     [self getRGBComponents:components forColor:_hudLayerColor];
     NSLog(@"%f %f %f", components[0], components[1], components[2]);
-
+    
     CGFloat red = components[0];
     CGFloat green = components[1];
     CGFloat blue = components[2];
@@ -519,7 +552,7 @@
                                  (id)[UIColor colorWithRed:red green:green blue:blue alpha:1].CGColor];
         gradientLayer.startPoint = CGPointMake(1, 0);
         gradientLayer.endPoint = CGPointMake(0, 0);
-
+        
     } else {
         gradientLayer.colors = @[(id)[UIColor colorWithRed:red green:green blue:blue alpha:0.4].CGColor,
                                  (id)[UIColor colorWithRed:red green:green blue:blue alpha:0.6].CGColor,
@@ -528,7 +561,7 @@
         gradientLayer.endPoint = CGPointMake(1, 0);
     }
     gradientLayer.locations = @[@(0.1f) ,@(0.4f)];
-
+    
     return gradientLayer;
 }
 
@@ -583,14 +616,14 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.item == 0 || indexPath.item == _stepNum + 1) { // 第一组和最后一组显示左右视图
-
+        
         if (indexPath.item == 0) {
             UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"borderLeftCell" forIndexPath:indexPath];
             
             if (![cell viewWithTag:10001]) {
                 MBLeftRulerView *leftView = [[MBLeftRulerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width/2, 50)];
                 leftView.backgroundColor = self.backgroundColor;
-
+                
                 leftView.minValue = _minValue;
                 leftView.unit = _unit;
                 leftView.tag = 10001;
@@ -602,8 +635,8 @@
             if (![cell viewWithTag:10002]) {
                 MBRightRulerView *rightView = [[MBRightRulerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width/2, 50)];
                 rightView.backgroundColor = self.backgroundColor;
-
-//                rightView.maxValue = _maxValue;
+                
+                //                rightView.maxValue = _maxValue;
                 // 用以解决设置的配置信息难以满足显示逻辑 比如步长 总数 最大值 最小值 不匹配
                 rightView.maxValue = _minValue + _stepNum * _groupMaxNum * _step;
                 rightView.unit = _unit;
@@ -616,7 +649,7 @@
     } else {
         MBRulerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"contentCell" forIndexPath:indexPath];
         CGFloat maxNum = _groupMaxNum * 1.0;
-        cell.rulerView.frame = CGRectMake(0, 0, kScaleplateGap*maxNum, 50);
+        cell.rulerView.frame = CGRectMake(0, 0, kMBRulerScaleplateGap*maxNum, 50);
         cell.rulerView.unit = _unit;
         
         cell.rulerView.minValue = _step*maxNum*(indexPath.item-1) + _minValue;
@@ -634,7 +667,7 @@
         return CGSizeMake(self.frame.size.width/2.0, 50.f);
     } else {
         CGFloat maxNum = _groupMaxNum * 1.0;
-        return CGSizeMake((kScaleplateGap * maxNum), 50.f);
+        return CGSizeMake((kMBRulerScaleplateGap * maxNum), 50.f);
     }
 }
 
@@ -654,7 +687,7 @@
 #pragma mark UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (_onScroll) {
-        NSUInteger value = scrollView.contentOffset.x / (kScaleplateGap);
+        NSUInteger value = scrollView.contentOffset.x / (kMBRulerScaleplateGap);
         _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (value * _step + _minValue), _unit];
     }
 }
@@ -672,26 +705,26 @@
                     [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
                     
                 } else {
-                    self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
-
+                    self.realValue = round(scrollView.contentOffset.x/(kMBRulerScaleplateGap));
+                    
                 }
             } else {
                 if ([_valueTF.text floatValue] <= _ignoreValue) {
                     _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (_step + _ignoreValue), _unit];
                     [self performSelector:@selector(didChangeValue) withObject:nil afterDelay:0];
                 } else {
-                    self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
-
+                    self.realValue = round(scrollView.contentOffset.x/(kMBRulerScaleplateGap));
+                    
                 }
             }
         } else {
-            self.realValue = round(scrollView.contentOffset.x/(kScaleplateGap));
+            self.realValue = round(scrollView.contentOffset.x/(kMBRulerScaleplateGap));
         }
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    self.realValue = round(scrollView.contentOffset.x / (kScaleplateGap)) ;
+    self.realValue = round(scrollView.contentOffset.x / (kMBRulerScaleplateGap)) ;
 }
 
 @end

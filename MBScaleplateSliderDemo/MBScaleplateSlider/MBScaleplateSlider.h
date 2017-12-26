@@ -58,10 +58,12 @@
 @property (nonatomic, assign) CGFloat scaleplateMiddle;
 /** 标尺最短刻度线 */
 @property (nonatomic, assign) CGFloat scaleplateShort;
+/** 标尺刻度间隔 */
+@property (nonatomic, assign) CGFloat scaleplateGap;
 
 /**
  初始化
-
+ 
  @param frame frame
  @param minValue 最小值
  @param maxValue 最大值
@@ -89,7 +91,7 @@
 
 /**
  设置左右两侧蒙版
-
+ 
  @param layerColor 蒙版颜色 nil默认为白色
  */
 - (void)addSideLayerWithColor:(UIColor *)layerColor;
