@@ -42,16 +42,14 @@
 @property (nonatomic, strong) UIColor *titleColor;
 /** 文字标题是否需要underline */
 @property (nonatomic, assign) BOOL hiddeUnderLine;
-/** 是否开启手动输入数值 */
-@property (nonatomic, assign) BOOL valueControlEnable;
 /** 是否初始化是显示到中线位置 */
 @property (nonatomic, assign) BOOL initialAtMiddle;
 /** 当前选中值 */
 @property (nonatomic, assign) CGFloat selectedValue;
-/** 设置顶部文本是否显示 默认为no */
-@property (nonatomic, assign) BOOL titleTextHidden;
 /** 标尺刻度文字大小 */
 @property (nonatomic, strong) UIFont *textFont;
+/** 标尺高亮刻度线 */
+@property (nonatomic, assign) CGFloat scaleplateHighlightLine;
 /** 标尺最长刻度线 */
 @property (nonatomic, assign) CGFloat scaleplateLong;
 /** 标尺中间刻度线 */
@@ -60,6 +58,8 @@
 @property (nonatomic, assign) CGFloat scaleplateShort;
 /** 标尺刻度间隔 */
 @property (nonatomic, assign) CGFloat scaleplateGap;
+/** 标尺刻度与文字上下间隔 */
+@property (nonatomic, assign) CGFloat scaleplateVerticalGap;
 
 /**
  初始化
