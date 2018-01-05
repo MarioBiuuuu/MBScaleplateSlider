@@ -673,6 +673,9 @@ CGFloat kMBRulerScaleplateVerticalGap;
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) { // 拖拽时没有处于滑动动画状态
+        NSUInteger value = scrollView.contentOffset.x / (kMBRulerScaleplateGap);
+        _currentValue = (value * _step + _minValue);
+
         if (self.openIgnore) {
             if (self.ignoreValue == 0) {
                 if (_currentValue > (_ignoreValue-0.000001) && _currentValue < (0.000001 + _ignoreValue)) {

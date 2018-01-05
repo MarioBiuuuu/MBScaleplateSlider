@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "MBScaleplateSlider"
-  s.version      = "1.1.6"
+  s.version      = "1.1.7"
   s.summary      = "iOS仿标尺 Slider滑动选择器"
 
   # This description is used to generate tags and improve search results.

@@ -27,7 +27,6 @@
     slider.titleColor = [UIColor blackColor];
     slider.hiddeUnderLine = YES;
     slider.selectedValue = 0;
-    slider.titleTextHidden = NO;
     slider.openIgnore = YES;
     slider.ignoreValue = 0;
     [slider addSideLayerWithColor:nil];
