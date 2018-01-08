@@ -259,6 +259,13 @@ CGFloat kMBRulerScaleplateVerticalGap;
     kMBRulerScaleplateGap = scaleplateGap;
 }
 
+- (void)setScaleplateHighlightLine:(CGFloat)scaleplateHighlightLine {
+    _scaleplateHighlightLine = scaleplateHighlightLine;
+    kMBRulerScaleplateHighlight = scaleplateHighlightLine;
+    self.tintLine.frame = CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateHighlight);
+    
+}
+
 /** 初始化 */
 + (instancetype)sliderWithFrame:(CGRect)frame minValue:(CGFloat)minValue maxValue:(CGFloat)maxValue step:(CGFloat)step groupMaxNum:(NSUInteger)groupMaxNum unit:(NSString *)unit hasMiddleLine:(BOOL)hasMiddleLine {
     return [[self alloc] initWithFrame:frame minValue:minValue maxValue:maxValue step:step groupMaxNum:groupMaxNum unit:unit hasMiddleLine:hasMiddleLine];
@@ -366,8 +373,8 @@ CGFloat kMBRulerScaleplateVerticalGap;
 
 - (UIImageView *)tintLine {
     if (!_tintLine) {
-        _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateLong)];
-        _tintLine.frame = CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateLong);
+        _tintLine = [[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateHighlight)];
+        _tintLine.frame = CGRectMake(self.bounds.size.width/2-0.5, CGRectGetMinY(self.collectionView.frame), 1.5, kMBRulerScaleplateHighlight);
         
         _tintLine.userInteractionEnabled = NO;
         _tintLine.backgroundColor = [UIColor orangeColor];
@@ -425,6 +432,8 @@ CGFloat kMBRulerScaleplateVerticalGap;
 
 - (void)setSelectedValue:(CGFloat)selectedValue {
     _selectedValue = selectedValue;
+    _currentValue = selectedValue;
+    
     if (selectedValue < self.minValue || selectedValue > self.maxValue) {
         self.realValue = round((_groupMaxNum * _stepNum) / 2.0);
         // collection 偏移至指定位置
@@ -434,7 +443,6 @@ CGFloat kMBRulerScaleplateVerticalGap;
     }
     self.realValue = round((_groupMaxNum * _stepNum) * ((selectedValue - self.minValue) / (self.maxValue - self.minValue)));
     //    _valueTF.text = [NSString stringWithFormat:@"%.1f%@", (selectedValue), _unit];
-    
     if (self.openIgnore) {
         if (self.ignoreValue == 0) {
             if (_currentValue > (_ignoreValue-0.000001) && _currentValue < (0.000001 + _ignoreValue)) {
@@ -675,7 +683,7 @@ CGFloat kMBRulerScaleplateVerticalGap;
     if (!decelerate) { // 拖拽时没有处于滑动动画状态
         NSUInteger value = scrollView.contentOffset.x / (kMBRulerScaleplateGap);
         _currentValue = (value * _step + _minValue);
-
+        
         if (self.openIgnore) {
             if (self.ignoreValue == 0) {
                 if (_currentValue > (_ignoreValue-0.000001) && _currentValue < (0.000001 + _ignoreValue)) {
